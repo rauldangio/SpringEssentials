@@ -1,7 +1,8 @@
 package br.com.springboot2essentials.service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,11 @@ import br.com.springboot2essentials.model.Anime;
 
 @Service
 public class AnimeService{
-	private List<Anime> animes = Arrays.asList(new Anime(1L, "Berserk"), new Anime(2L, "Vinland Saga"));
+	private static List<Anime> animes;
+	
+	static {
+		animes = new ArrayList<>(List.of(new Anime(1L, "Berserk"), new Anime(2L, "Vinland Saga")));
+	}
 	
 	public List<Anime> listAll(){
 		return animes;
@@ -22,5 +27,11 @@ public class AnimeService{
 				.filter(anime -> anime.getId().equals(id))
 				.findFirst()
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not Found"));
+	}
+
+	public Anime save(Anime anime) {
+		anime.setId(ThreadLocalRandom.current().nextLong(3, 10000));
+		animes.add(anime);
+		return anime;
 	}
 }

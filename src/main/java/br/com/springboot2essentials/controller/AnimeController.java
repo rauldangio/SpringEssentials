@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +32,10 @@ public class AnimeController {
     @GetMapping(path = "/{id}")
     private ResponseEntity<Anime> findById(@PathVariable int id){
         return new ResponseEntity<Anime>(animeService.listById(id), HttpStatus.OK);
+    }
+    
+    @PostMapping
+    public ResponseEntity<Anime> save(@RequestBody Anime anime){
+    	return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
     }
 }
