@@ -1,6 +1,8 @@
 package br.com.springboot2essentials.controller;
 
 import br.com.springboot2essentials.model.Anime;
+import br.com.springboot2essentials.requests.AnimePostRequestBody;
+import br.com.springboot2essentials.requests.AnimePutRequestBody;
 import br.com.springboot2essentials.service.AnimeService;
 import lombok.AllArgsConstructor;
 
@@ -33,11 +35,11 @@ public class AnimeController {
 
     @GetMapping(path = "/{id}")
     private ResponseEntity<Anime> findById(@PathVariable long id){
-        return new ResponseEntity<Anime>(animeService.listById(id), HttpStatus.OK);
+        return new ResponseEntity<Anime>(animeService.listByIdOrElseThrowNotFound(id), HttpStatus.OK);
     }
     
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime){
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime){
     	return new ResponseEntity<Anime>(animeService.save(anime), HttpStatus.CREATED);
     }
     
@@ -48,7 +50,7 @@ public class AnimeController {
     }
     
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime){
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody anime){
     	animeService.replace(anime);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
